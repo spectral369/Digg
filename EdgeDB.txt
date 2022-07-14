@@ -1,0 +1,51 @@
+module default {
+
+scalar type next_var extending sequence;
+scalar type order_id extending sequence;
+
+type user{
+property user_id -> next_var {
+        constraint exclusive;
+        readonly :=true;
+    }
+   required property hash ->str{
+		default :="";
+	readonly:=true;
+	 constraint exclusive;
+		}
+		
+	required property username ->str;
+	required property namefull ->str;
+	required property password ->str;
+	required property registration_date ->datetime{
+	readonly:=true;
+	}
+	required property rank ->int16{
+		default:=0;
+	}
+	}
+type beverage {
+	required property name ->str;
+	required property price ->float32;
+	required property masa -> str;
+	required property quantity ->int16;
+}
+
+type order{
+	property user_id -> order_id {
+        constraint exclusive;
+        readonly :=true;
+    }
+    
+required property order_time->datetime{
+	default := datetime_of_statement();
+	readonly:=true;
+	}
+	
+	required link user -> default::user;
+	
+	required multi link  beverage -> default::beverage;
+
+}
+
+}
