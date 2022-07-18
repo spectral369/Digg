@@ -49,7 +49,12 @@ $('#login').click(function () {
 		success: function (data) {
 			$('#snackbar').text(data);
 			showToast();
+			if(data.includes("success")){
 			document.location.href = "/bartender";
+			}else{
+				//$("#usernameLogin").val('');
+				$("#passwordLogin").val('');
+			}
 		}
 	});
 });

@@ -55,8 +55,8 @@ router.post('/login', function (req, res, next) {
 
 run(query).then(function(resp){
  
-
-  if(resp){
+console.log(resp);
+  if(!resp.length === 0){
     var decrypted = CryptoJS.AES.decrypt(resp[0].password, process.env.USER);
     if(password === decrypted.toString(CryptoJS.enc.Utf8)){
       console.log("password is the same !");
@@ -65,9 +65,14 @@ run(query).then(function(resp){
       req.session.save();
       res.send("Login Successfull !");
     }else{
+    
       req.session.loggedin = false;
       res.send("Login Failed !");
     }
+  }
+  else{
+    console.log("Login failed");
+    res.send("Login Failed !");
   }
 });
 
