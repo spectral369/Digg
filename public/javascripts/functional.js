@@ -49,7 +49,7 @@ $('#login').click(function () {
 		success: function (data) {
 			$('#snackbar').text(data);
 			showToast();
-			if(data.includes("success")){
+			if(data.includes("Successfull")){
 			document.location.href = "/bartender";
 			}else{
 				//$("#usernameLogin").val('');
