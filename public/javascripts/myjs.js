@@ -36,20 +36,6 @@ class Beverage {
 
 }
 
-
-var PRICES = function () {
-  var globals = {
-    cola_025: 5,
-    gin_010: 8,
-    beer_05: 6,
-    batz: "blah"
-  }
-  return {
-    getValue: function (s) {
-      return globals[s];
-    }
-  }
-}();
 function validatePassword() {
   var password = document.getElementById("password")
     , confirm_password = document.getElementById("password2");
@@ -113,11 +99,35 @@ function all_lowercase() {
 
 
 
-const cola =  new Beverage('Coca Cola',0,"0.33L",5,'/images/baverages/cola1.svg',"Coca Cola");
-const gin =  new Beverage('Gin',0,"0.1L",8,'/images/baverages/gin.png',"Gin");
-const beer =  new Beverage('Beer',0,"0.5L",6,'/images/baverages/beer1.png',"Beer");
 
-const bev =  [cola,gin,beer];
+const beer_birra_moretti_doza =  new Beverage('Birra Moretti',0,"0.5L",6,'/images/baverages/beer1.png',"Doza Bere Birra Moretti 0.5L");
+const beer_heineken_doza =  new Beverage('Heineken',0,"0.5L",8,'/images/baverages/beer1.png',"Doza Bere Heineken 0.5L");
+const beer_corona_sticla =  new Beverage('Corona',0,"0.35L",15,'/images/baverages/beer2.png',"Sticla Bere Corona 0.35L");
+const suc_cola_doza =  new Beverage('Coca Cola',0,"0.5L",5,'/images/baverages/doza2.png',"Doza Coca Cola 0.5L");
+const suc_fanta_doza =  new Beverage('Fanta',0,"0.5L",5,'/images/baverages/doza2.png',"Doza Fanta 0.5L");
+const energizant_red_bull_doza =  new Beverage('Red Bull',0,"0.35L",10,'/images/baverages/doza1.png',"Doza Red BUll 0.35L");
+const apa_plata_plastic =  new Beverage('Apa Plata',0,"0.5L",5,'/images/baverages/apa1.png',"Sticla Apa Plata 0.5L");
+const apa_minerala_plastic =  new Beverage('Apa Minerala',0,"0.5L",5,'/images/baverages/apa1.png',"Sticla Apa Minerala 0.5L");
+const long_drink_vodka =  new Beverage('Long Drink Vodka',0,"0.??L",15,'/images/baverages/cup2.png',"Long Drink Vodka 0.??L");
+const long_drink_rom =  new Beverage('Long Drink Rom',0,"0.??L",15,'/images/baverages/cup2.png',"Long Drink Rom 0.??L");
+const long_drink_gin =  new Beverage('Long Drink Gin',0,"0.??L",15,'/images/baverages/cup2.png',"Long Drink Gin 0.??L");
+const long_drink_whiskey =  new Beverage('Long Drink Wiskey',0,"0.??L",20,'/images/baverages/cup2.png',"Long Drink Wiskey 0.??L");
+const vodka =  new Beverage('Vodka',0,"0.1L",16,'/images/baverages/cup1.png',"Vodka 0.1L");
+const gin =  new Beverage('Gin',0,"0.1L",16,'/images/baverages/cup1.png',"Gin 0.1L");
+const rom =  new Beverage('Rom',0,"0.1L",16,'/images/baverages/cup1.png',"Vodka 0.1L");
+const whiskey =  new Beverage('Whiskey',0,"0.1L",24,'/images/baverages/cup1.png',"Whiskey 0.1L");
+const shoturi =  new Beverage('Shot',0,"0.??L",5,'/images/baverages/shot1.png',"Shot 0.??L");
+const promotie_jack_sticla =  new Beverage('Sticla Jack Daniels',0,"0.7L",200,'/images/baverages/bottle1.png',"Sticla Jack Daniels 0.7L");
+const promotie_vodka_sticla =  new Beverage('Sticla Vodka',0,"0.7L",200,'/images/baverages/bottle1.png',"Sticla Vodka 0.7L");
+const promotie_gin_sticla =  new Beverage('Sticla Gin',0,"0.7L",200,'/images/baverages/bottle1.png',"Sticla Gin 0.7L");
+const promotie_rom_sticla =  new Beverage('Sticla Rom',0,"0.7L",200,'/images/baverages/bottle1.png',"Sticla Rom 0.7L");
+const suc_natural =  new Beverage('Suc Natural',0,"0.5L",20,'/images/baverages/juice1.png',"Sticla Suc natural 0.5L");
+
+//const gin =  new Beverage('Gin',0,"0.1L",8,'/images/baverages/gin.png',"Gin");
+
+const bev =  [beer_birra_moretti_doza,beer_heineken_doza,beer_corona_sticla,suc_cola_doza,suc_fanta_doza,energizant_red_bull_doza,apa_plata_plastic,
+              apa_minerala_plastic, long_drink_vodka,long_drink_rom,long_drink_gin,long_drink_whiskey,vodka,gin,rom,whiskey,shoturi,
+            promotie_jack_sticla,promotie_vodka_sticla,promotie_gin_sticla,promotie_rom_sticla,suc_natural];
 
 function generate(){
  
@@ -150,15 +160,17 @@ function generateBeverages(item) {
    
    var div_col_icon = document.createElement('div');
    div_col_icon.className +='col-md-4';
+   div_col_icon.className +=' set_contents';
    var div_icon_text =  document.createElement('div');
-   div_icon_text.className +='icon_and_text';
+   //div_icon_text.className +='icon_and_text';
    var img_icon = document.createElement('img');
    img_icon.src = item.icon;
    var icon_span =  document.createElement('span');
    icon_span.textContent = item.name + ' - '+item.masa;
    div_icon_text.appendChild(img_icon);
-   div_icon_text.appendChild(icon_span);
+   //div_icon_text.appendChild(icon_span);
    div_col_icon.appendChild(div_icon_text);
+   div_col_icon.appendChild(icon_span)
    div_root.appendChild(div_col_icon);
 
 
@@ -236,64 +248,5 @@ function generateBeverages(item) {
 });
 
 }
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-$(document).ready(function () {
-
-  var quantitiy = 0;
-  $('.quantity-right-plus').click(function (e) {
-  
-
-    // Stop acting like a button
-    e.preventDefault();
-    // Get the field name
-    var quantity_cola = parseInt($('#quantity').val());
-
-    // If is not undefined
-
-
-    $('#quantity').val(quantity_cola + 1);
-    bev[0].increment();
-    
-    // Increment
-    document.querySelector('#quantity').dispatchEvent(new Event('change', { 'bubbles': true }))
-  });
-
-  $('.quantity-left-minus').click(function (e) {
-    // Stop acting like a button
-    e.preventDefault();
-    // Get the field name
-    var quantity = parseInt($('#quantity').val());
-
-    // If is not undefined
-    bev[0].decrement();
-    // Increment
-    if (quantity > 0) {
-      $('#quantity').val(quantity - 1);
-    }
- 
-    document.querySelector('#quantity').dispatchEvent(new Event('change', { 'bubbles': true }))
-
-  });
- 
-
-});
-
-*/
-
-
-
-
 
 

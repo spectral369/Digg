@@ -16,113 +16,17 @@
             </span>
         </div>
     </nav>
-
+    <div class="w-100 d-flex align-items-center justify-content-center ">
+        <span class="text-secondary">Comenzi totale: </span>
+        <span id="ordercount" class="lead text-primary"> 0</span>
+    </div>
 
     <div class="container" id="container">
-        <!-- beverage 1
-        <div class="row row-cols-3 border rounded-pill text-center d-flex justify-content-center align-items-center beverage-item">
-            <div class="col-md-4 ">
-                <div id="icon_and_text">
-                <img src="/images/baverages/cola1.svg" />
-                <span>Coca-cola &copy;</span>
-                </div>
-            </div>
-              <div class="col-md-4 text-center d-flex justify-content-center align-items-center">
-              
-                <span ><h4>0.25L</h4></span>
-              
-            </div>
-            <div class="col-md-4 ms-auto text-center d-flex justify-content-center align-items-center">
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus"
-                            data-field="">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </span>
-                    <input type="text" id="quantity" name="quantity" class="form-control bg-dark" readonly value="0" min="1" max="100">
-                    <span class="input-group-btn">
-                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus"
-                            data-field="">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </span>
-                </div>
-
-            </div>
-        </div>
-        <!-- end beverage 1
-
-        <div class="row row-cols-3 border rounded-pill text-center d-flex justify-content-center align-items-center beverage-item">
-            <div class="col-md-4 ">
-                   <div id="icon_and_text">
-                <img src="/images/baverages/gin.png" />
-                <span>Gin</span>
-                </div>
-            </div>
-              <div class="col-md-4 text-center d-flex justify-content-center align-items-center">
-              
-                <span ><h4>0.25L</h4></span>
-              
-            </div>
-            <div class="col-md-4 ms-auto text-center d-flex justify-content-center align-items-center">
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus"
-                            data-field="">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </span>
-                    <input type="text" id="quantity" name="quantity" class="form-control bg-dark" readonly value="0" min="1" max="100">
-                    <span class="input-group-btn">
-                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus"
-                            data-field="">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </span>
-                </div>
-
-            </div>
-        </div>
-        <!--end beverage2
-
-        <div class="row row-cols-3 border rounded-pill text-center d-flex justify-content-center align-items-center beverage-item">
-            <div class="col-md-4 ">
-                   <div id="icon_and_text">
-                <img src="/images/baverages/beer1.png" />
-                <span>Beer</span>
-                </div>
-            </div>
-              <div class="col-md-4 text-center d-flex justify-content-center align-items-center">
-              
-                <span ><h4>0.33L</h4></span>
-              
-            </div>
-            <div class="col-md-4 ms-auto text-center d-flex justify-content-center align-items-center">
-                <div class="input-group" id="test_counter">
-                    <span class="input-group-btn">
-                        <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus"
-                            data-field="">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </span>
-                    <input type="text" id="quantity" name="quantity" class="form-control bg-dark" readonly value="0" min="1" max="100">
-                    <span class="input-group-btn">
-                        <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus"
-                            data-field="">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </span>
-                </div>
-
-            </div>
-        </div>
-
-            -->
 
 
     </div>
     <div id="snackbarLogin"></div>
+
 
     <div class="position-absolute top-94 start-50 translate-middle">
         <button id="comanda" type="submit">Commanda</button>
@@ -151,10 +55,10 @@
                 item.quantity = 0;
             });
 
-            if(beveragesBuilder.length<1)
+            if (beveragesBuilder.length < 1)
                 return;
 
-             resetquantity();
+            resetquantity();
 
             $.ajax({
                 url: '/send/insertorder',
@@ -173,7 +77,7 @@
                 }
             });
 
-           
+
         });
 
 
@@ -184,6 +88,30 @@
             for (var i = 0; i < elms.length; i++)
                 elms[i].value = 0;
         }
+
+        function updateCountComenzi() {
+            $.ajax({
+                url: '/send/ordercount',
+                type: 'POST',
+                data: JSON.stringify({
+
+                }),
+                datatype: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    $('#ordercount').text(data);
+                }
+            });
+
+        };
+        //prostie de test NU se face asa in productie; NU FACE NIMIC 
+        var executed = false;
+        if (!executed) {
+            updateCountComenzi();
+            executed = true;
+        }
+
+        setInterval('updateCountComenzi()', 30000);
 
 
 

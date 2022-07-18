@@ -8,7 +8,10 @@ router.get('/', function (req, res, next) {
 
     res.render('bartender', { title: 'My Bartender' });
   } else {
-
+    if(req.session){
+    delete req.session.loggedin;
+    delete req.session.hash;
+    }
     res.writeHead(301, { Location: '/' });
     res.end();
   }

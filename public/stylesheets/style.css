@@ -90,8 +90,34 @@ nav li:hover {
   max-width: 3em;
 }
 
+#container{
+  z-index: 100;
+  height: 77.5vh;
+  overflow-y:scroll;
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+
+#ordercount{
+  padding-left: 1em;
+}
+
+
+.set_contents{
+  display: grid !important;
+  justify-content: center;
+}
+
 .beverage-item {
   margin-top: 0.5em;
+}
+
+#comanda{
+  z-index: 9999;
 }
 
 

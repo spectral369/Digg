@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const edgedb = require("edgedb");
 const CryptoJS = require("crypto-js");
+const nodemailer = require('nodemailer');
 
 ///asta trebuie pusa in db.config  TODO !!!!!!!!!!! si pusa in  .gitignore !
 const client = edgedb.createClient({
@@ -64,6 +65,7 @@ run(query).then(function(resp){
       req.session.save();
       res.send("Login Successfull !");
     }else{
+      req.session.loggedin = false;
       res.send("Login Failed !");
     }
   }
@@ -118,6 +120,46 @@ router.post('/ordercount', function (req, res, next) {
 
 
 });
+
+
+
+router.post('/sendmail', function (req, res, next) {
+  let name =  req.body.name;
+  let email =  req.body.email;
+  let message =  req.body.message;
+
+
+let transporter = nodemailer.createTransport({
+  service: 'postfix',
+  host: 'localhost',
+  secure: false,
+  port: 25,
+  //auth: { user: 'yourlinuxusername@edison.example.com', pass: 'yourlinuxuserpassword' },
+  tls: { rejectUnauthorized: false }
+});
+
+let mailOptions = {
+  from: 'root@freelancingpeter.eu',
+  to: 'admin@freelancingpeter.eu',
+  subject: 'Mail from '+name,
+  text: `" ${message} \n User E-Mail: ${email}"`
+};
+
+transporter.sendMail(mailOptions, (error, info) => {
+  if (error) {
+    console.log(error);
+    res.end("E-Mail send failed!")
+  } else {
+    console.log(info);
+    res.end("E-Mail send success !")
+  }
+});
+ 
+
+
+});
+
+
 
 
 async function run(query) {
