@@ -77,7 +77,7 @@ function capitalize_fullname() {
   var full_name = document.getElementById('namefull');
   var curr_str = full_name.value;
   
-  curr_str = curr_str.replace(/[^A-Za-z]*$/gm, "");
+  curr_str = curr_str.replace(/[^A-Za-z ]*$/gm, "");
   //curr_str = curr_str.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
   if (curr_str.length < 4) {
     full_name.style.color = "red";
