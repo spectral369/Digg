@@ -79,28 +79,77 @@ $('#bartenderbtn').click(function () {
 	}
 });
 
+
 $('#sendmsg').click(function () {
+	  $.ajax({
+		  url: '/send/sendmail',
+		  type: 'POST',
+		  data: JSON.stringify({
+			  name: $("#name").val(),
+			  email:$("#email").val(),
+			  message:$("#message").val()
+		  }),
+		  datatype: "json",
+		  contentType: 'application/json; charset=utf-8',
+		  success: function (data) {
+  
+			  console.log(data);
+			  //$('#snackbarLogin').text(data);
+			  //showToastLogin();
+			  //document.location.href="/bartender";
+		  }
+	  });
+  
+  });
 
+  $('#introbtn').click(function(){
+	$('#intro').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+  
+  });
 
+  $('#bartenderbtn').click(function(){
+	$('#work').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+  
+  });
+  $('#organizatorbtn').click(function(){
+	$('#organizatori').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+  
+  });
+  $('#contactbtn').click(function(){
+	$('#contact').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+  
+  });
 
-	$.ajax({
-		url: '/send/insertorder',
-		type: 'POST',
-		data: JSON.stringify({
-			name: $("#name").val(),
-			email:$("#email").val(),
-			message:$("#message").val()
-		}),
-		datatype: "json",
-		contentType: 'application/json; charset=utf-8',
-		success: function (data) {
+  $('#intro-close').click(function(){
+	$('#intro').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+  });
 
-			console.log(data);
-			//$('#snackbarLogin').text(data);
-			//showToastLogin();
-			//document.location.href="/bartender";
-		}
-	});
+  $('#work-close').click(function(){
+	$('#work').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+  });
 
-});
+  $('#oraganizatori-close').click(function(){
+	$('#organizatori').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+	
+  });
 
+  $('#contact-close').click(function(){
+	$('#contact').toggleClass('d-none');
+	$('.navbar').toggleClass('d-none');
+	$('#footer2').toggleClass('d-none');
+  });
+  
