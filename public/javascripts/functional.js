@@ -36,27 +36,31 @@ $('#register').click(function () {
 
 
 $('#login').click(function () {
-	console.log("login clicked");
-	$.ajax({
-		url: '/send/login',
-		type: 'POST',
-		data: JSON.stringify({
-			username: $("#usernameLogin").val(),
-			password: $("#passwordLogin").val()
-		}),
-		datatype: "json",
-		contentType: 'application/json; charset=utf-8',
-		success: function (data) {
-			$('#snackbar').text(data);
-			showToast();
-			if(data.includes("Successfull")){
-			document.location.href = "/bartender";
-			}else{
-				//$("#usernameLogin").val('');
-				$("#passwordLogin").val('');
+	let u = $("#usernameLogin").val();
+	let p = $("#passwordLogin").val();
+	if (u.length > 3 & p.length > 3) {
+		$.ajax({
+			url: '/send/login',
+			type: 'POST',
+			data: JSON.stringify({
+				username: $("#usernameLogin").val(),
+				password: $("#passwordLogin").val()
+			}),
+			datatype: "json",
+			contentType: 'application/json; charset=utf-8',
+			success: function (data) {
+				$('#snackbar').text(data);
+				showToast();
+				if (data.includes("Successfull")) {
+					document.location.href = "/bartender";
+				} else {
+					//$("#usernameLogin").val('');
+					$("#passwordLogin").val('');
+				}
 			}
-		}
-	});
+		});
+	}
+
 });
 
 
@@ -81,75 +85,74 @@ $('#bartenderbtn').click(function () {
 
 
 $('#sendmsg').click(function () {
-	  $.ajax({
-		  url: '/send/sendmail',
-		  type: 'POST',
-		  data: JSON.stringify({
-			  name: $("#name").val(),
-			  email:$("#email").val(),
-			  message:$("#message").val()
-		  }),
-		  datatype: "json",
-		  contentType: 'application/json; charset=utf-8',
-		  success: function (data) {
-  
-			  console.log(data);
-			  //$('#snackbarLogin').text(data);
-			  //showToastLogin();
-			  //document.location.href="/bartender";
-		  }
-	  });
-  
-  });
+	$.ajax({
+		url: '/send/sendmail',
+		type: 'POST',
+		data: JSON.stringify({
+			name: $("#name").val(),
+			email: $("#email").val(),
+			message: $("#message").val()
+		}),
+		datatype: "json",
+		contentType: 'application/json; charset=utf-8',
+		success: function (data) {
 
-  $('#introbtn').click(function(){
+			console.log(data);
+			//$('#snackbarLogin').text(data);
+			//showToastLogin();
+			//document.location.href="/bartender";
+		}
+	});
+
+});
+
+$('#introbtn').click(function () {
 	$('#intro').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-  
-  });
 
-  $('#bartenderbtn').click(function(){
+});
+
+$('#bartenderbtn').click(function () {
 	$('#work').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-  
-  });
-  $('#organizatorbtn').click(function(){
+
+});
+$('#organizatorbtn').click(function () {
 	$('#organizatori').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-  
-  });
-  $('#contactbtn').click(function(){
+
+});
+$('#contactbtn').click(function () {
 	$('#contact').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-  
-  });
 
-  $('#intro-close').click(function(){
+});
+
+$('#intro-close').click(function () {
 	$('#intro').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-  });
+});
 
-  $('#work-close').click(function(){
+$('#work-close').click(function () {
 	$('#work').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-  });
+});
 
-  $('#oraganizatori-close').click(function(){
+$('#oraganizatori-close').click(function () {
 	$('#organizatori').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-	
-  });
 
-  $('#contact-close').click(function(){
+});
+
+$('#contact-close').click(function () {
 	$('#contact').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-  });
-  
+});

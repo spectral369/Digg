@@ -117,6 +117,23 @@ function all_lowercase_reg() {
 }
 
 
+
+document.onreadystatechange = function() {
+  if (document.readyState !== "complete") {
+      document.querySelector(
+        "body").style.visibility = "hidden";
+      document.querySelector(
+        "#loader").style.visibility = "visible";
+  } else {
+      document.querySelector(
+        "#loader").style.display = "none";
+      document.querySelector(
+        "body").style.visibility = "visible";
+  }
+}
+
+
+
 const beer_birra_moretti_doza = new Beverage('Birra Moretti', 0, "0.5L", 6, '/images/baverages/beer1.png', "Doza Bere Birra Moretti 0.5L");
 const beer_heineken_doza = new Beverage('Heineken', 0, "0.5L", 8, '/images/baverages/beer1.png', "Doza Bere Heineken 0.5L");
 const beer_corona_sticla = new Beverage('Corona', 0, "0.35L", 15, '/images/baverages/beer2.png', "Sticla Bere Corona 0.35L");
@@ -217,7 +234,7 @@ function generateBeverages(item) {
   var input_counter = document.createElement('input');
   input_counter.setAttribute("type", "text");
   input_counter.id = 'quantity';
-  input_counter.className += 'form-control bg-dark text-white';
+  input_counter.className += 'form-control bg-dark p-1 text-white';
   input_counter.name = 'quantity';
   input_counter.value = 0;
   input_counter.min = 1;

@@ -48,13 +48,17 @@ router.post('/login', function (req, res, next) {
       var decrypted = CryptoJS.AES.decrypt(resp[0].password, process.env.USER);
       if (password === decrypted.toString(CryptoJS.enc.Utf8)) {
         console.log("password is the same !");
-        //if(rank>0)
+        if(resp[0].rank > 0){
         req.session.loggedin = true;
         req.session.rank = resp[0].rank;
         req.session.token = resp[0].hash;
         req.session.save();
         res.send("Login Successfull !");
         res.end();
+        }else{
+          res.send("Login Successful, but no rights given ! Please contact the administrator!");
+          res.end();
+        }
       } else {
         req.session.loggedin = false;
         res.send("Login Failed !");
