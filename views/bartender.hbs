@@ -21,7 +21,7 @@
         </div>
     </nav>
     <div class="w-100 d-flex align-items-center justify-content-center ">
-        <span class="text-secondary">Comenzi totale: </span>
+        <span class="text-secondary">Total Comenzi(user current) : </span>
         <span id="ordercount" class="lead text-primary"> 0</span>
     </div>
 
@@ -92,7 +92,7 @@
 
         function updateCountComenzi() {
             $.ajax({
-                url: '/send/ordercount',
+                url: '/send/ordercountuser',
                 type: 'POST',
                 data: JSON.stringify({
 

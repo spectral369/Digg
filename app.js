@@ -15,7 +15,7 @@ var bartenderRouter = require('./routes/bartender');
 var app = express();
 app.use(session({
   secret: 'Digg_fuckers',
-  resave: false,
+  resave: true,
   rolling: true,
   saveUninitialized: true,
   cookie: {  httpOnly: false, 

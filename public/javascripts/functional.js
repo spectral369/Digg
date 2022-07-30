@@ -156,3 +156,13 @@ $('#contact-close').click(function () {
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
 });
+
+
+$("#toggleNavBtn").click(function () {
+	
+	$('*[id*=nav-item]').each(function() {
+		$(this).addClass('w-100');
+	});
+  });
+
+ 

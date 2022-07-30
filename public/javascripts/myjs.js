@@ -1,3 +1,4 @@
+
 class Beverage {
 
   name;
@@ -275,3 +276,6 @@ function generateBeverages(item) {
   });
 
 }
+
+
+

@@ -18,23 +18,30 @@
 
 
 
+
+
+
+
 	<nav class="navbar navbar-expand-lg position-absolute bottom-0 border-top border-white navbar-light custom-nav">
-		<div class="container-fluid container-nav-custom">
-			<a class="navbar-brand bg-light itemc text-center border border-white" id="introbtn">Intro</a>
-			<button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+		<div class="container-fluid container-nav-custom ">
+			<div class="d-flex">
+			<a class="navbar-brand bg-light itemc text-center border border-white " id="introbtn">Intro</a>
+			<button id="toggleNavBtn" class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
 				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
+				
 			</button>
+</div>
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav itemc ">
-					<li class="nav-item text-center border border-white">
+					<li id="nav-item" class="nav-item text-center border border-white ">
 						<a class="nav-link bg-light" aria-current="page" id="bartenderbtn"
 							loggedin="{{loggedin}}">Bartender Area</a>
 					</li>
-					<li class="nav-item text-center border border-white">
+					<li id="nav-item" class="nav-item text-center border border-white ">
 						<a class="nav-link bg-light" id="organizatorbtn">Organizatori</a>
 					</li>
-					<li class="nav-item text-center border border-white">
+					<li id="nav-item" class="nav-item text-center border border-white ">
 						<a class="nav-link bg-light" id="contactbtn">Contact</a>
 					</li>
 				</ul>

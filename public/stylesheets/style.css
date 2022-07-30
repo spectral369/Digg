@@ -158,25 +158,35 @@ nav li:hover {
   border-radius: 0.2em;
 
 
+
 }
 
 .container-nav-custom {
   padding: 0 !important;
   margin: 0 !important;
+  
+  justify-content: center !important;
 }
 
 .nav-item {
   width: 8.5em;
   padding: 0;
+  
+}
+
+#navbarNav{
+  align-items: center;
 }
 
 .navbar-brand {
   width: 8.5em;
   margin: 0.08;
+  
 }
 
 .itemc {
   margin: 0.1em;
+  align-items: center;
 }
 
 .itemc:hover {
