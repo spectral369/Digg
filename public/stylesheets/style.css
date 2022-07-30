@@ -149,6 +149,11 @@ nav li:hover {
   display: inline-grid;
 }
 
+.imagine{
+  width: 100vw;
+  height: 100vh;
+}
+
 
 
 .custom-nav {
