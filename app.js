@@ -20,7 +20,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: {  httpOnly: false, 
     secure: false, //aici va fi true pe host(pentru ca necesita certificat https !!!!)
-    maxAge:60*60*60 }
+    maxAge:60*60*60,
+    sameSite: 'lax' }
 }));
 
 
