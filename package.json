@@ -10,7 +10,7 @@
     "cookie-parser": "~1.4.6",
     "crypto-js": "4.1.1",
     "debug": "~4.3.4",
-    "edgedb": "^0.20.10",
+    "edgedb": "^0.21.3",
     "express": "~4.18.1",
     "express-session": "^1.17.3",
     "hbs": "~4.2.0",

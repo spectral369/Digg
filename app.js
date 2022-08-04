@@ -19,7 +19,7 @@ app.use(session({
   rolling: true,
   saveUninitialized: true,
   cookie: {  httpOnly: false, 
-    secure: false, 
+    secure: false, //aici va fi true pe host(pentru ca necesita certificat https !!!!)
     maxAge:60*60*60 }
 }));
 
@@ -37,13 +37,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
+/*
 app.all('/*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
   res.header("Access-Control-Allow-Methods", "GET, POST","PUT");
   next();
-});
+});*/
 
 app.use('/', indexRouter);
 app.use('/send', usersRouter);
@@ -54,7 +54,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-app.set('trust proxy', 1) // trust first proxy
+//app.set('trust proxy', 1) // trust first proxy
 
 // error handler
 app.use(function(err, req, res, next) {

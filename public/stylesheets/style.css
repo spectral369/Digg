@@ -149,11 +149,6 @@ nav li:hover {
   display: inline-grid;
 }
 
-.imagine{
-  width: 100vw;
-  height: 100vh;
-}
-
 
 
 .custom-nav {
@@ -477,4 +472,39 @@ input{
 
 .btn-close {
   font-size: 1.2em !important;
+}
+
+
+
+
+
+@media only screen and (max-device-width: 640px) {
+  #cookie-info{
+    margin-right: 5em;
+    margin-bottom: 8.5em;
+    width: 10em;
+    height: 15em;
+    background-color: #333;
+    color: #ffffff;
+    opacity: 0.66;
+    }
+}
+  
+@media only screen and (min-device-width: 768px) {
+  #cookie-info{
+    margin-right: 5em;
+    margin-bottom: 5em;
+    width: 10em;
+    height: 15em;
+    background-color: #333;
+    color: #ffffff;
+    opacity: 0.66;
+  }
+
+  .imagine{
+
+    width: 100vw;
+    height: 100vh;
+    
+  }
 }

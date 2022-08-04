@@ -10,6 +10,12 @@ function showToastLogin() {
 	setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
 }
 
+function showToastContact() {
+	var x = document.getElementById("snackbar_contact");
+	x.className = "show";
+	setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+}
+
 $('#register').click(function () {
 	console.log("register clicked");
 	$.ajax({
@@ -97,10 +103,10 @@ $('#sendmsg').click(function () {
 		contentType: 'application/json; charset=utf-8',
 		success: function (data) {
 
-			console.log(data);
-			//$('#snackbarLogin').text(data);
-			//showToastLogin();
-			//document.location.href="/bartender";
+
+			$('#snackbar_contact').text(data);
+			showToastLogin();
+
 		}
 	});
 
@@ -159,10 +165,13 @@ $('#contact-close').click(function () {
 
 
 $("#toggleNavBtn").click(function () {
-	
-	$('*[id*=nav-item]').each(function() {
+
+	$('*[id*=nav-item]').each(function () {
 		$(this).addClass('w-100');
 	});
-  });
+});
 
- 
+
+$("#cookiebtn").click(function () {
+	$('#cookie-info').addClass('d-none');
+});

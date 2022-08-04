@@ -128,8 +128,8 @@ router.post('/sendmail', function (req, res, next) {
   });
 
   let mailOptions = {
-    from: 'root@freelancingpeter.eu',
-    to: 'admin@freelancingpeter.eu',
+    from: 'admin@diggdolma.com',
+    to: 'contact@diggdolma.com',
     subject: 'Mail from ' + name,
     text: `" ${message} \n User E-Mail: ${email}"`
   };
@@ -143,8 +143,6 @@ router.post('/sendmail', function (req, res, next) {
       res.end("E-Mail send success !")
     }
   });
-
-
 
 });
 
