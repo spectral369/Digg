@@ -129,7 +129,7 @@ router.post('/sendmail', function (req, res, next) {
 
   let mailOptions = {
     from: 'admin@diggdolma.com',
-    to: 'contact@diggdolma.com',
+    to: 'admin@diggdolma.com',
     subject: 'Mail from ' + name,
     text: `" ${message} \n User E-Mail: ${email}"`
   };
