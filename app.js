@@ -18,8 +18,8 @@ app.use(session({
   resave: true,
   rolling: true,
   saveUninitialized: true,
-  cookie: {  httpOnly: false, 
-    secure: false, //aici va fi true pe host(pentru ca necesita certificat https !!!!)
+  cookie: {  httpOnly: true, 
+    secure: true, //aici va fi true pe host(pentru ca necesita certificat https !!!!)
     maxAge:60*60*60,
     sameSite: 'lax' }
 }));
@@ -38,13 +38,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-/*
-app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
-  res.header("Access-Control-Allow-Methods", "GET, POST","PUT");
-  next();
-});*/
 
 app.use('/', indexRouter);
 app.use('/send', usersRouter);

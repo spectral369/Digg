@@ -1,4 +1,3 @@
-const { $ } = require("edgedb");
 
 function showToast() {
 	var x = document.getElementById("snackbar");

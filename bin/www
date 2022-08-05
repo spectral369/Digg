@@ -6,7 +6,25 @@
 
 var app = require('../app');
 var debug = require('debug')('digg-ss:server');
-var http = require('http');
+var https = require('https');
+var fs = require('fs');
+/*
+const privateKey = fs.readFileSync('/home/spectral369/rootCA.key', 'utf8');///etc/letsencrypt/live/yourdomain.com/privkey.pem
+const certificate = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/cert.pem', 'utf8');///etc/letsencrypt/live/yourdomain.com/cert.pem
+const ca = fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/chain.pem', 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+};*/
+
+
+var privateKey  = fs.readFileSync('/home/spectral369/private.key', 'utf8');
+var certificate = fs.readFileSync('/home/spectral369/certificate.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+
+
 
 /**
  * Get port from environment and store in Express.
@@ -19,7 +37,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(credentials,app);
 
 /**
  * Listen on provided port, on all network interfaces.
