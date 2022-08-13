@@ -77,7 +77,7 @@ function passwordVa() {
 function capitalize_fullname() {
   var full_name = document.getElementById('namefull');
   var curr_str = full_name.value;
-  
+
   curr_str = curr_str.replace(/[^A-Za-z ]*$/gm, "");
   //curr_str = curr_str.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
   if (curr_str.length < 4) {
@@ -119,17 +119,19 @@ function all_lowercase_reg() {
 
 
 
-document.onreadystatechange = function() {
+document.onreadystatechange = function () {
   if (document.readyState !== "complete") {
-      document.querySelector(
-        "body").style.visibility = "hidden";
-      document.querySelector(
-        "#loader").style.visibility = "visible";
+    document.querySelector(
+      "body").style.visibility = "hidden";
+    document.querySelector(
+      "#loader").style.visibility = "visible";
+
   } else {
-      document.querySelector(
-        "#loader").style.display = "none";
-      document.querySelector(
-        "body").style.visibility = "visible";
+
+    document.querySelector(
+      "#loader").style.display = "none";
+    document.querySelector(
+      "body").style.visibility = "visible";
   }
 }
 

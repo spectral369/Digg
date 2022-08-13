@@ -3,6 +3,10 @@ var router = express.Router();
 const edgedb = require("edgedb");
 const CryptoJS = require("crypto-js");
 const nodemailer = require('nodemailer');
+var path = require('path');
+var fs = require('fs');
+const e = require('express');
+var Busboy = require('busboy');
 
 ///asta trebuie pusa in db.config  TODO !!!!!!!!!!! si pusa in  .gitignore !
 const client = edgedb.createClient({
@@ -47,16 +51,16 @@ router.post('/login', function (req, res, next) {
     if (resp.length > 0) {
       var decrypted = CryptoJS.AES.decrypt(resp[0].password, process.env.USER);
       if (password === decrypted.toString(CryptoJS.enc.Utf8)) {
-        if(resp[0].rank > 0){
-        req.session.loggedin = true;
-        req.session.rank = resp[0].rank;
-        req.session.token = resp[0].hash;
-        req.session.save();
-        res.send("Login Successfull !");
-       // res.end();
-        }else{
+        if (resp[0].rank > 0) {
+          req.session.loggedin = true;
+          req.session.rank = resp[0].rank;
+          req.session.token = resp[0].hash;
+          req.session.save();
+          res.send("Login Successfull !");
+          // res.end();
+        } else {
           res.send("Login Successful, but no rights given ! Please contact the administrator!");
-         // res.end();
+          // res.end();
         }
       } else {
         req.session.loggedin = false;
@@ -96,10 +100,9 @@ router.post('/insertorder', function (req, res, next) {
 
 router.post('/ordercountuser', function (req, res, next) {
 
-  let query = `with result := (select count(order{ user_id}) filter order.user.hash="`+req.session.token+`") select count(result);`;
+  let query = `with result := (select order{ beverage } filter order.user.hash="` + req.session.token + `") select count(result);`;
   run(query).then(function (resp) {
     if (resp) {
-      console.log(resp);
       res.send(resp);
       res.end();
     } else {
@@ -110,6 +113,291 @@ router.post('/ordercountuser', function (req, res, next) {
 
 
 });
+
+
+router.post('/ordercount', function (req, res, next) {
+  let query = `select count(order);`;
+  run(query).then(function (resp) {
+    if (resp) {
+      res.send(resp);
+      res.end();
+    } else {
+      res.send("N/A");
+      res.end();
+    }
+  });
+});
+
+router.post('/usercount', function (req, res, next) {
+  let query = `with result := (select user{ id } filter .rank>0) select count(result);`;
+  run(query).then(function (resp) {
+    if (resp) {
+      res.send(resp);
+      res.end();
+    } else {
+      res.send("N/A");
+      res.end();
+    }
+  });
+});
+
+
+
+
+router.post('/partydates', function (req, res, next) {
+  let query = `with result := (select order.order_time ) select distinct (datetime_get(result,'month'), datetime_get(result,'year'));`;
+  run(query).then(function (resp) {
+    if (resp) {
+      res.send(resp);
+      res.end();
+    } else {
+      res.send("N/A");
+      res.end();
+    }
+  });
+});
+
+router.post('/getimagelist', function (req, res, next) {
+
+  var directoryPath = path.join(__dirname, '../public/images/carousel');
+  var obj = [];
+  fs.readdir(directoryPath, function (err, files) {
+    if (err) {
+      return console.log('Unable to scan directory: ' + err);
+    }
+
+
+    var filePath = path.join(__dirname, '../carousel_active_images.txt');
+
+    var img_line = fs.readFileSync(filePath, 'utf8');
+    const lines = img_line.split(/\r?\n/);
+
+    var line_img = [];
+    var is_empty = true;
+    lines.forEach((line) => {
+      if (line.length < 1) {
+        is_empty = true;
+      } else {
+        is_empty = false;
+        line_img.push(line);
+      }
+
+    });
+
+    files.forEach(function (file) {
+      let x = new Object();
+      if (!is_empty) {
+        for (var i = 0; i < line_img.length; i++) {
+          //console.log(file +" "+line_img[i]);
+          if (line_img[i].length < 1)
+            break;
+
+          if (file.includes(line_img[i])) {
+            x.src = file;
+            x.active = true;
+
+            break;
+          }
+          else {
+
+            x.src = file;
+            x.active = false;
+
+          }
+
+        }
+      } else {
+        x.src = file;
+        x.active = false;
+      }
+      obj.push(x);
+    });
+    res.send(obj);
+
+  });
+});
+
+
+router.post('/addcarouselimg', function (req, res, next) {
+
+  var filePath = path.join(__dirname, '../carousel_active_images.txt');
+
+  fs.appendFileSync(filePath, "\n" + req.body.item);
+
+  res.send("done");
+
+});
+
+router.post('/removecarouselimg', function (req, res, next) {
+
+  var filePath = path.join(__dirname, '../carousel_active_images.txt');
+
+  fs.readFile(filePath, 'utf8', function (err, data) {
+    if (err) {
+      return console.log(err);
+    }
+    var lines = data.split(/\r?\n/);
+    var to_be_written = '';
+    var y = 0;
+    lines.forEach((line) => {
+      if (line.includes(req.body.item)) {
+
+      } else {
+        to_be_written += line + "\n";
+      }
+
+      y++;
+    });
+    to_be_written = to_be_written.substring(0, to_be_written.length - 1);
+    console.log(to_be_written);
+    fs.writeFileSync(filePath, to_be_written);
+
+  });
+
+  res.send("done");
+
+});
+
+
+
+router.post('/getcarouselactive', function (req, res, next) {
+
+  var filePath = path.join(__dirname, '../carousel_active_images.txt');
+
+  fs.readFile(filePath, 'utf8', function (err, data) {
+    if (err) {
+      return console.log(err);
+    }
+
+    const lines = data.split(/\r?\n/);
+
+    var line_img = [];
+    lines.forEach((line) => {
+      if (line.length > 1)
+        line_img.push(line);
+    });
+
+    res.send(line_img);
+  });
+});
+
+
+
+router.post('/uploadcarouselimg', function (req, res, next) {
+
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  let sampleFile = req.files.file;
+
+  sampleFile.mv(path.join(__dirname + '/../public/', 'images/carousel/') + sampleFile.name, function (err) {
+    if (err) {
+      console.log(err);
+      return res.status(500).send(err);
+    }
+
+    res.send('File uploaded!');
+  });
+});
+
+
+router.post('/deletecarouselimgs', function (req, res, next) {
+
+
+  var directoryPath = path.join(__dirname, '../public/images/carousel');
+  var obj = [];
+  fs.readdir(directoryPath, function (err, files) {
+    if (err) {
+      return console.log('Unable to scan directory: ' + err);
+    }
+
+
+    var filePath = path.join(__dirname, '../carousel_active_images.txt');
+
+    var img_line = fs.readFileSync(filePath, 'utf8');
+    const lines = img_line.split(/\r?\n/);
+
+    var line_img = [];
+    var is_empty = true;
+    lines.forEach((line) => {
+      if (line.length < 1) {
+        is_empty = true;
+      } else {
+        is_empty = false;
+        line_img.push(line);
+      }
+
+    });
+    var directoryPath = path.join(__dirname, '../public/images/carousel/');
+    files.forEach(function (file) {
+      var is_present = false;
+      if (!is_empty) {
+        for (var i = 0; i < line_img.length; i++) {
+          //console.log(file +" "+line_img[i]);
+          if (line_img[i].length < 1)
+            break;
+
+          if (file.includes(line_img[i])) {
+            is_present = true;
+          }
+
+
+        }
+      } else {
+
+
+      }
+      if (!is_present)
+        fs.unlinkSync(directoryPath + file);
+    });
+
+
+  });
+
+  res.send("done");
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getcarouselactive_1() {
+  var filePath = path.join(__dirname, '../carousel_active_images.txt');
+
+  fs.readFile(filePath, 'utf8', function (err, data) {
+    if (err) {
+      return console.log(err);
+    }
+
+    const lines = data.split(/\r?\n/);
+
+    var line_img = [];
+    lines.forEach((line) => {
+      line_img.push(line);
+    });
+
+    return line_img;
+  });
+}
+
 
 
 

@@ -176,3 +176,44 @@ $("#toggleNavBtn").click(function () {
 $("#cookiebtn").click(function () {
 	$('#cookie-info').addClass('d-none');
 });
+
+
+function set_carousel_img() {
+	var container = document.getElementById('carousel-inner');
+
+	if (container) {
+
+		$.ajax({
+			url: '/send/getcarouselactive',
+			type: 'POST',
+			data: JSON.stringify({
+			}),
+			datatype: "json",
+			contentType: 'application/json; charset=utf-8',
+			success: function (data) {
+				var container = document.getElementById('carousel-inner');
+				for (var i = 0; i < data.length; i++) {
+					var div_item = document.createElement("div");
+					if (i == 0) {
+						div_item.className += 'carousel-item active';
+					} else {
+						div_item.className += 'carousel-item';
+					}
+					div_item.setAttribute('data-bs-interval', '5000');
+					var img_item = document.createElement("img");
+					img_item.src = `/images/carousel/` + data[i];
+					img_item.className += "d-block img-fluid mobile-stretch imagine";
+					img_item.setAttribute("alt", data[i]);
+					div_item.appendChild(img_item);
+
+					container.appendChild(div_item);
+
+
+				}
+			}
+		});
+	}
+
+}
+
+set_carousel_img();

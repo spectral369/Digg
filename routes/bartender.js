@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
   if (req.session.loggedin && req.session.token) {
 
-    res.render('bartender', { title: 'My Bartender' });
+    res.render('bartender', { title: 'My Bartender', rank:req.session.rank });
   } else {
     
     req.session.destroy(function(err) {
@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
       } else {
           req.session = null;
           console.log("reset");
-          return  res.render('index', { title: 'Digg Dolma', loggedin:req.session.loggedin });
+          return  res.render('index', { title: 'Digg Dolma' });
       }
   });
     /*res.writeHead(301, { Location: '/' });

@@ -1,3 +1,4 @@
+using extension edgeql_http;
 module default {
 
 scalar type next_var extending sequence;
@@ -14,7 +15,9 @@ property user_id -> next_var {
 	 constraint exclusive;
 		}
 		
-	required property username ->str;
+	required property username -> str{
+		constraint exclusive;
+	}
 	required property namefull ->str;
 	required property password ->str;
 	required property registration_date ->datetime{
@@ -37,7 +40,7 @@ type order{
         readonly :=true;
     }
     
-required property order_time->datetime{
+required property order_time->local_datetime{
 	default := datetime_of_statement();
 	readonly:=true;
 	}
