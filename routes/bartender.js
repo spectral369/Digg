@@ -18,8 +18,6 @@ router.get('/', function (req, res, next) {
           return  res.render('index', { title: 'Digg Dolma' });
       }
   });
-    /*res.writeHead(301, { Location: '/' });
-    res.end();*/
   }
 
 

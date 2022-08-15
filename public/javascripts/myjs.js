@@ -265,13 +265,21 @@ function generateBeverages(item) {
   container.appendChild(div_root);
 
   btn_minus.addEventListener("click", function () {
-    //delay interval between clicks NEEDED !!!!!!!!!!!!! TODO
+    btn_minus.setAttribute('disabled', '');
+    setTimeout(function () {
+      btn_minus.removeAttribute('disabled');
+    }, 265);
     item.decrement();
     input_counter.value = item.quantity;
     document.querySelector('#quantity').dispatchEvent(new Event('change', { 'bubbles': true }))
+
   });
 
   btn_plus.addEventListener("click", function () {
+    btn_plus.setAttribute('disabled', '');
+    setTimeout(function () {
+      btn_plus.removeAttribute('disabled');
+    }, 265);
     item.increment();
     input_counter.value = item.quantity;
     document.querySelector('#quantity').dispatchEvent(new Event('change', { 'bubbles': true }))

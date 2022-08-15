@@ -7,9 +7,10 @@
                         <path fill-rule="evenodd"
                             d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
                     </svg></a>
-                    {{#equals rank 2}}
-                    <a type="button" id="to_adminbtn" href="/admin" class="btn btn-secondary mb-3 m-2" role="button">Admin Page</a>
-                    {{/equals}}
+                {{#equals rank 2}}
+                <a type="button" id="to_adminbtn" href="/admin" class="btn btn-secondary mb-3 m-2" role="button">Admin
+                    Page</a>
+                {{/equals}}
             </div>
             <span class="navbar-text justify-content-end text-primary text-center pe-3">
                 TOTAL:
@@ -26,19 +27,11 @@
         <span class="text-secondary">Total Comenzi(user current) : </span>
         <span id="ordercount" class="lead text-primary"> 0</span>
     </div>
-
     <div class="container" id="container">
-
-
     </div>
     <div id="snackbarLogin"></div>
-
-
     <div class="position-absolute top-94 start-50 translate-middle">
-
     </div>
-
-
     <script>
 
         generate();
@@ -73,14 +66,10 @@
                 datatype: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (data) {
-
                     $('#snackbarLogin').text(data);
                     showToastLogin();
-
                 }
             });
-
-
         });
 
 
@@ -125,9 +114,5 @@
 
         });
 
-
-
     </script>
-
-
 </div>

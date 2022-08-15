@@ -6,17 +6,77 @@ const nodemailer = require('nodemailer');
 var path = require('path');
 var fs = require('fs');
 const e = require('express');
-var Busboy = require('busboy');
+const { exit } = require('process');
 
-///asta trebuie pusa in db.config  TODO !!!!!!!!!!! si pusa in  .gitignore !
-const client = edgedb.createClient({
-  host: '127.0.0.1',
-  port: 10707,
-  user: 'edgedb',
-  password: 'YrgbGsOMVfU6yd4ndqpJxtXo',
-  // "database": "edgedb",
-  tlsSecurity: 'insecure',
+
+
+const configPath = path.join(__dirname, '../db.config');
+var client;
+
+fs.readFile(configPath, 'utf8', function (err, data) {
+  if (err) {
+    fs.writeFile(configPath, 'DB info required here line by line separeted with ":" ', function (err) {
+      if (err) return console.log(err);
+      console.log('DB config missing, edit db.config');
+      exit(1)
+    });
+  }
+
+  const lines = data.split(/\r?\n/);
+  var line_info = { host: '', port: 0, user: '', password: '', tlsSecurity: '' };
+  lines.forEach((line) => {
+
+    if (line.length > 1) {
+
+      var info_all = line.split(":");
+      switch (info_all[0]) {
+        case 'host': {
+          line_info.host = info_all[1];
+          break;
+        }
+        case 'port': {
+          line_info.port = parseInt(info_all[1]);
+          break;
+        }
+        case 'user': {
+          line_info.user = info_all[1];
+          break;
+        }
+        case 'password': {
+          line_info.password = info_all[1];
+          break;
+        }
+        case 'tlsSecurity': {
+          line_info.tlsSecurity = info_all[1];
+          break;
+        }
+        default: {
+          console.log("db.config invalid!");
+          exit(2);
+        }
+      }
+    }
+  });
+  client = edgedb.createClient({
+    host: line_info.host,
+    port: line_info.port,
+    user: line_info.user,
+    password: line_info.password,
+    // "database": "edgedb",
+    tlsSecurity: line_info.tlsSecurity,
+  });
+
 });
+
+
+/*const client = edgedb.createClient({
+  host: '',
+  port: ,
+  user: '',
+  password: '',
+  // "database": "",
+  tlsSecurity: '',
+});*/
 
 router.post('/register', function (req, res, next) {
 
@@ -33,7 +93,6 @@ router.post('/register', function (req, res, next) {
 
     } else {
       res.status(400).send("Registration failed")
-      // res.end();
     }
   });
 
@@ -57,10 +116,8 @@ router.post('/login', function (req, res, next) {
           req.session.token = resp[0].hash;
           req.session.save();
           res.send("Login Successfull !");
-          // res.end();
         } else {
           res.send("Login Successful, but no rights given ! Please contact the administrator!");
-          // res.end();
         }
       } else {
         req.session.loggedin = false;
@@ -188,7 +245,6 @@ router.post('/getimagelist', function (req, res, next) {
       let x = new Object();
       if (!is_empty) {
         for (var i = 0; i < line_img.length; i++) {
-          //console.log(file +" "+line_img[i]);
           if (line_img[i].length < 1)
             break;
 
@@ -313,7 +369,6 @@ router.post('/deletecarouselimgs', function (req, res, next) {
       return console.log('Unable to scan directory: ' + err);
     }
 
-
     var filePath = path.join(__dirname, '../carousel_active_images.txt');
 
     var img_line = fs.readFileSync(filePath, 'utf8');
@@ -335,70 +390,26 @@ router.post('/deletecarouselimgs', function (req, res, next) {
       var is_present = false;
       if (!is_empty) {
         for (var i = 0; i < line_img.length; i++) {
-          //console.log(file +" "+line_img[i]);
           if (line_img[i].length < 1)
             break;
 
           if (file.includes(line_img[i])) {
             is_present = true;
           }
-
-
         }
       } else {
-
+        console.log("Please reset 'carousel_active_images.txt'!")
 
       }
       if (!is_present)
         fs.unlinkSync(directoryPath + file);
     });
 
-
   });
 
   res.send("done");
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function getcarouselactive_1() {
-  var filePath = path.join(__dirname, '../carousel_active_images.txt');
-
-  fs.readFile(filePath, 'utf8', function (err, data) {
-    if (err) {
-      return console.log(err);
-    }
-
-    const lines = data.split(/\r?\n/);
-
-    var line_img = [];
-    lines.forEach((line) => {
-      line_img.push(line);
-    });
-
-    return line_img;
-  });
-}
-
-
 
 
 router.post('/sendmail', function (req, res, next) {
@@ -433,8 +444,6 @@ router.post('/sendmail', function (req, res, next) {
   });
 
 });
-
-
 
 
 async function run(query) {
