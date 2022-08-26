@@ -118,7 +118,6 @@ function all_lowercase_reg() {
 }
 
 
-
 document.onreadystatechange = function () {
   if (document.readyState !== "complete") {
     document.querySelector(
@@ -134,7 +133,6 @@ document.onreadystatechange = function () {
       "body").style.visibility = "visible";
   }
 }
-
 
 
 const beer_birra_moretti_doza = new Beverage('Birra Moretti', 0, "0.5L", 6, '/images/baverages/beer1.png', "Doza Bere Birra Moretti 0.5L");

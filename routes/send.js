@@ -7,6 +7,34 @@ var path = require('path');
 var fs = require('fs');
 const e = require('express');
 const { exit } = require('process');
+var PdfPrinter = require('pdfmake');
+var fonts = {
+  Courier: {
+    normal: 'Courier',
+    bold: 'Courier-Bold',
+    italics: 'Courier-Oblique',
+    bolditalics: 'Courier-BoldOblique'
+  },
+  Helvetica: {
+    normal: 'Helvetica',
+    bold: 'Helvetica-Bold',
+    italics: 'Helvetica-Oblique',
+    bolditalics: 'Helvetica-BoldOblique'
+  },
+  Times: {
+    normal: 'Times-Roman',
+    bold: 'Times-Bold',
+    italics: 'Times-Italic',
+    bolditalics: 'Times-BoldItalic'
+  },
+  Symbol: {
+    normal: 'Symbol'
+  },
+  ZapfDingbats: {
+    normal: 'ZapfDingbats'
+  }
+};
+var printer = new PdfPrinter(fonts);
 
 
 
@@ -173,7 +201,11 @@ router.post('/ordercountuser', function (req, res, next) {
 
 
 router.post('/ordercount', function (req, res, next) {
-  let query = `select count(order);`;
+  //let query = `select count(order);`;
+
+  let query = `with result2 := (select user { hash } filter '` + req.session.token + `' in .hash)
+	select count(order) if result2.hash = '`+ req.session.token + `' else -1;`;
+
   run(query).then(function (resp) {
     if (resp) {
       res.send(resp);
@@ -186,7 +218,11 @@ router.post('/ordercount', function (req, res, next) {
 });
 
 router.post('/usercount', function (req, res, next) {
-  let query = `with result := (select user{ id } filter .rank>0) select count(result);`;
+  // let query = `with result := (select user{ id } filter .rank>0) select count(result);`;
+
+  let query = `with result := (select user { id } filter .rank>0),
+	result2 := (select user { hash } filter '`+ req.session.token + `' in .hash)
+	select count(result) if result2.hash = '`+ req.session.token + `' else -1;`
   run(query).then(function (resp) {
     if (resp) {
       res.send(resp);
@@ -202,7 +238,7 @@ router.post('/usercount', function (req, res, next) {
 
 
 router.post('/partydates', function (req, res, next) {
-  let query = `with result := (select order.order_time ) select distinct (datetime_get(result,'month'), datetime_get(result,'year'));`;
+  let query = `with result := (select order.order_time ) select distinct (datetime_get(result,'year'), datetime_get(result,'month'));`;
   run(query).then(function (resp) {
     if (resp) {
       res.send(resp);
@@ -213,6 +249,74 @@ router.post('/partydates', function (req, res, next) {
     }
   });
 });
+
+
+
+router.post('/getinfomessage', function (req, res, next) {
+  var filePath = path.join(__dirname, '../message.txt');
+  var message_lines = fs.readFileSync(filePath, 'utf8');
+  const lines = message_lines.split(/\r?\n/);
+
+  var message_data = [];
+  var is_empty = true;
+  lines.forEach((line) => {
+    if (line.length < 1) {
+      is_empty = true;
+    } else {
+      is_empty = false;
+      message_data.push(line);
+    }
+  });
+
+  if (!is_empty) {
+    var message_text = message_data[0].split(":");
+
+    var date1 = message_data[1].split(":");
+    var date_now = new Date();
+    var date_init = new Date(date1[1]);
+
+    timeDifference = date_init.getTime() - date_now.getTime();
+
+    var return_data = { message: message_text[1], time: timeDifference.toString() }
+    res.send(return_data);
+  } else {
+    res.send("No Message");
+  }
+
+});
+
+router.post('/setinfomessage', function (req, res, next) {
+
+  var filePath = path.join(__dirname, '../message.txt');
+  var message_lines = fs.readFileSync(filePath, 'utf8');
+  const lines = message_lines.split(/\r?\n/);
+
+  var message_data = [];
+  var is_empty = true;
+  lines.forEach((line) => {
+    if (line.length < 1) {
+      is_empty = true;
+    } else {
+      is_empty = false;
+      message_data.push(line);
+    }
+  });
+
+  var message_new_data = message_data[0].substring(0, message_data[0].indexOf(":") + 1);
+  message_new_data += req.body.message;
+  message_new_data += '\n';
+  message_new_data += message_data[1].substring(0, message_data[1].indexOf(":") + 1);
+  message_new_data += req.body.date;
+
+
+  console.log(message_new_data);
+  fs.writeFileSync(filePath, message_new_data, 'utf-8');
+  res.send("Done !")
+});
+
+
+
+
 
 router.post('/getimagelist', function (req, res, next) {
 
@@ -410,6 +514,202 @@ router.post('/deletecarouselimgs', function (req, res, next) {
   res.send("done");
 
 });
+
+router.post('/ordersbydate', function (req, res, next) {
+
+  let date = req.body.date.replace('/', '-');
+  let month = date.substr(date.indexOf('/'), date.length);
+
+  if (month.length == 1) {
+    month = '0' + month;
+  }
+  date = date.substr(0, date.indexOf('-') + 1) + month;
+  let query = `select order{ user_id,user:{username}, beverage:{name,price,quantity}} filter to_str(datetime_truncate(.order_time, "months")) like '${date}%';`;
+  run(query).then(function (resp) {
+    if (resp) {
+      res.send(resp);
+      res.end();
+    } else {
+      res.send("N/A");
+      res.end();
+    }
+  });
+});
+
+router.post('/generatePDF', function (req, res, next) {
+
+  let query = `select order{ user_id,order_time,user:{username}, beverage:{name,price,quantity}} filter .user_id=${req.body.id};`;//
+  //console.log(query);
+  run(query).then(function (resp) {
+    if (resp) {
+      var order_id = resp[0].user_id;
+      var order_time = resp[0].order_time;
+      var beverages = resp[0].beverage;
+
+      var content_bev = [[{ text: 'Produs', style: 'tableHeader' }, { text: 'Count', style: 'tableHeader2' }, { text: 'Pret', style: 'tableHeader3' }]];
+      var price_total = 0;
+
+      beverages.forEach((beverage) => {
+        content_bev.push([{ text: beverage.name, style: 'columnitem1' }, { text: beverage.quantity, style: 'columnitem2' }, { text: beverage.price, style: 'columnitem3' }]);
+        price_total += beverage.price * beverage.quantity;
+      });
+      var dd = {
+        defaultStyle: {
+          font: 'Helvetica'
+        },
+        info: {
+          title: 'Invoice',
+          author: 'spectral369',
+          subject: 'Beverange Invoice',
+        },
+        pageSize: 'A4',
+        pageOrientation: 'portrait',
+        footer: function (currentPage, pageCount) {
+          return {
+            table: {
+              widths: ['*', 100],
+              body: [
+                [
+                  { text: '©spectral369', link: 'https://freelancingpeter.eu', style: 'footer1' },
+                  { text: 'Page ' + pageCount, alignment: 'right', style: 'footer2' }
+                ]
+              ]
+            },
+            layout: 'noBorders'
+          };
+        },
+        content: [
+        ], styles: {
+          center1:
+          {
+            alignment: 'center',
+            bold: true,
+            fontSize: 18,
+            color: 'black'
+          },
+          center2: {
+            alignment: 'center',
+            fontSize: 14,
+            color: 'black'
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 14,
+            color: 'black',
+          },
+          tableHeader2: {
+            bold: true,
+            fontSize: 14,
+            color: 'black',
+            alignment: 'center',
+          },
+          tableHeader3: {
+            bold: true,
+            fontSize: 14,
+            color: 'black',
+            alignment: 'right',
+          },
+          columnitem1: {
+            alignment: 'justify',
+          },
+
+          columnitem2: {
+            alignment: 'center',
+          },
+          columnitem3: {
+            alignment: 'right',
+          },
+          total1: {
+            bold: true,
+            fontSize: 15,
+            margin: [365, 5, 0, 15],
+          },
+          total2: {
+            bold: true,
+            fontSize: 16,
+            decoration: 'underline'
+
+          },
+          footer1: {
+            decoration: 'underline',
+            alignment: 'center',
+            margin: [105, 10, 0, 15],
+          },
+          footer2: {
+            decoration: 'underline',
+            alignment: 'center',
+            margin: [0, 10, 50, 35],
+          }
+        }
+
+      }
+      var header = [{
+        text: 'Chitanta/Invoice',
+        style: 'center1'
+      }];
+      var sub_header = [{
+        text: "No." + order_id + " / " + order_time.toISOString().replace(/T/, " ").replace(/\..+/, '') + "\n\n",
+        style: 'center2'
+      }];
+      var total = [{
+        style: 'total1',
+        text: [
+          { text: '\nTotal RON: ' }, { text: price_total, style: 'total2' }
+        ]
+      }];
+      var qr = [{
+        qr: 'diggdolma.com',
+        style: {
+          alignment: 'center'
+        }
+      }];
+      var table2 = [{
+
+        columns: [
+          { width: '*', text: '' },
+          {
+            width: 'auto',
+
+            table: {
+              headerRows: 1,
+
+              widths: [200, 50, 100],
+              body: content_bev
+            },
+            layout: 'headerLineOnly',
+          },
+
+          { width: '*', text: '' },
+        ]
+
+      }];
+      dd.content.push(header);
+      dd.content.push(sub_header);
+      dd.content.push(table2);
+      dd.content.push(total);
+      dd.content.push(qr);
+      var pdfDoc = printer.createPdfKitDocument(dd);
+      //var pdf_name = 'pdfs/doc_'+generateRandomString(10)+'.pdf';
+      //pdfDoc.pipe(fs.createWriteStream(pdf_name));
+      //pdfDoc.end();
+
+      //var file = fs.createReadStream('pdfs/doc2Tgre4013G.pdf');
+      //var stat = fs.statSync('pdfs/doc2Tgre4013G.pdf');
+      //res.setHeader('Content-Length', stat.size);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
+      //file.pipe(res);
+      pdfDoc.pipe(res);
+      pdfDoc.end();
+
+    } else {
+      res.send("N/A");
+      res.end();
+    }
+  });
+
+});
+
 
 
 router.post('/sendmail', function (req, res, next) {

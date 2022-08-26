@@ -113,10 +113,17 @@ $('#sendmsg').click(function () {
 
 });
 
+
+$('#toggleNavBtn').click(function () {
+	$('#alert-msg').toggleClass('d-none');
+	$('#cookie-info').addClass('d-none');
+});
+
 $('#introbtn').click(function () {
 	$('#intro').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
+
 
 });
 
@@ -125,17 +132,20 @@ $('#bartenderbtn').click(function () {
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
 
+
 });
 $('#organizatorbtn').click(function () {
 	$('#organizatori').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
 
+
 });
 $('#contactbtn').click(function () {
 	$('#contact').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
+
 
 });
 
@@ -155,7 +165,6 @@ $('#oraganizatori-close').click(function () {
 	$('#organizatori').toggleClass('d-none');
 	$('.navbar').toggleClass('d-none');
 	$('#footer2').toggleClass('d-none');
-
 });
 
 $('#contact-close').click(function () {
@@ -217,3 +226,47 @@ function set_carousel_img() {
 }
 
 set_carousel_img();
+
+
+
+$(document).ready(function () {
+	var wrapper = document.getElementById("wrapper");
+	if (wrapper) {
+		$.ajax({
+			url: '/send/getinfomessage',
+			type: 'POST',
+			data: JSON.stringify({
+			}),
+			datatype: "json",
+			contentType: 'application/json; charset=utf-8',
+			success: function (data) {
+
+				if (typeof data === 'object') {
+
+					var time = parseInt(data.time);
+					var message = data.message;
+					if (time > 120000) {
+						var alert_root = document.createElement('div');
+						alert_root.className += "alert alert-info alert-dismissible fade show position-absolute bottom-0 custom-alert";
+						alert_root.setAttribute("role", "alert");
+						alert_root.setAttribute("id", "alert-msg");
+						alert_root.textContent = message;
+
+						var close_btn = document.createElement('button');
+						close_btn.className += "btn-close";
+						close_btn.setAttribute("type", "button");
+						close_btn.setAttribute("data-bs-dismiss", "alert");
+						close_btn.setAttribute("aria-label", "Close");
+						alert_root.appendChild(close_btn);
+
+						var root = document.getElementById("wrapper");
+						root.appendChild(alert_root);
+
+					}
+				}
+
+			}
+		});
+	}
+
+});

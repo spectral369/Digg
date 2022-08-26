@@ -13,8 +13,10 @@
         </div>
         <div id="general-stats-2" class="">
           <select id="party-date-select" class="form-select" aria-label="Selecteaza Data">
+            <option selected disabled>Selecteaza Data</option>
           </select>
           <div id="stats-beverages-1">
+
           </div>
         </div>
       </div>
@@ -44,10 +46,40 @@
           <button class="btn btn-secondary ms-1 text-white btn-danger" type="button" id="delete-files">Delete
             Non-Selected Files</button>
         </div>
+      </div>
+    </div>
+    <!-- message-->
+
+    <div id="main-stats" class="container-fluid ps-3 w-100 text-center">
+      <button id="alert_message-btn" class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+        data-bs-target="#alert-manager" aria-expanded="false" aria-controls="collapseExample">
+        Message Alert Manager !
+      </button>
+
+      <div class="collapse" id="alert-manager">
+        <div class="card card-body text-center bg-dark bg-gradient">
+          <div class="card card-body d-flex w-100" style="width: 300px;">
+            <div class="input-group mb-3">
+              <span class="input-group-text">Alert Message</span>
+              <textarea class="form-control text-dark border border-primary" aria-label="With textarea"
+                id="alert-message" aria-required="true" minlength="6" oninput="alert_message_validation();checkValid()"
+                required></textarea>
+            </div>
+            <div class="input-group mb-3"></div>
+            <span class="input-group-text">Until Date</span>
+            <input class="datepicker" type="date" data-date-format="mm/dd/yyyy" id="alert-date"
+              oninput="alert_date_validation();checkValid()" value="" required />
+            <button class="btn btn-outline-secondary text-black" type="button" id="set-message" disabled>Set
+              message</button>
+          </div>
+
+        </div>
 
       </div>
-
     </div>
+
+
+
   </div>
   <script src="/javascripts/admin.js"></script>
   <script>

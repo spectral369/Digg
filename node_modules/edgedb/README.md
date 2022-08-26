@@ -19,7 +19,7 @@
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://www.edgedb.com">Website</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.edgedb.com/docs/clients/01_js/index">Docs</a>
+  <a href="https://www.edgedb.com/docs/clients/js/index">Docs</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://discord.gg/umUueND6ag">Discord</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
@@ -82,7 +82,7 @@ npm install edgedb@latest
 
 #### New features
 
-- Added the `.withGlobals` method the `Client` for setting [global variables](/docs/datamodel/globals)
+- Added the `.withGlobals` method to the `Client` for setting [global variables](https://www.edgedb.com/docs/datamodel/globals).
 
   ```ts
   import {createClient} from "edgedb";
@@ -93,7 +93,7 @@ npm install edgedb@latest
   client.query(`select User { email } filter .id = global current_user;`);
   ```
 
-- Support for globals in the query builder
+- Support for globals in the query builder.
 
   ```ts
   const query = e.select(e.User, user => ({
@@ -104,17 +104,15 @@ npm install edgedb@latest
   await query.run(client);
   ```
 
-- Support for the `group` statement. [Docs](/docs/clients/js/group)
+- Support for the [group statement](https://www.edgedb.com/docs/clients/js/group).
 
   ```ts
-  e.group(e.Movie, movie => {
-    return {
-      title: true,
-      actors: {name: true},
-      num_actors: e.count(movie.characters),
-      by: {release_year: movie.release_year},
-    };
-  });
+  e.group(e.Movie, movie => ({
+    title: true,
+    actors: {name: true},
+    num_actors: e.count(movie.characters),
+    by: {release_year: movie.release_year},
+  }));
   /* [
     {
       key: {release_year: 2008},
@@ -133,14 +131,14 @@ npm install edgedb@latest
   ] */
   ```
 
-- Support for [range types](/docs/datamodel/primitives#ranges) and [`DateDuration`](/docs/stdlib/datetime#type::cal::date_duration) values
+- Support for [range types](https://www.edgedb.com/docs/datamodel/primitives#ranges) and [`DateDuration`](https://www.edgedb.com/docs/stdlib/datetime#type::cal::date_duration) values.
 
 ### Requirements
 
 - Node.js 12+
-- _TypeScript only_
-  - TypeScript 4.4+
-  - `yarn add @types/node`
+- For TypeScript users:
+  - TypeScript 4.4+ is required
+  - `yarn add @types/node --dev`
 
 ### Installation
 
@@ -152,7 +150,7 @@ yarn add edgedb         # yarn users
 ## Basic usage
 
 > The examples below demonstrate only the most fundamental use cases for this
-> library. **[Go to the complete documentation site. >](https://www.edgedb.com/docs/clients/01_js/index)**
+> library. **[Go to the complete documentation site. >](https://www.edgedb.com/docs/clients/js/index)**
 
 ### Create a client
 
@@ -232,17 +230,17 @@ Instead of writing queries as strings, you can use this package to generate a
 _query builder_. The query builder lets you write queries in a code-first way
 and automatically infers the return type of your queries.
 
-To generate the query builder, install the `edgedb`, initialize a project (if
+To generate the query builder, install the `edgedb` package, initialize a project (if
 you haven't already), then run the following command:
 
-```sh
+```bash
 $ npx edgeql-js
 ```
 
-This will generate an EdgeQL query builder into the `"./dbschema/edgeql-js`
+This will generate an EdgeQL query builder into the `./dbschema/edgeql-js`
 directory, as defined relative to your project root.
 
-For details on using the query builder, refer to the [complete documentation](https://www.edgedb.com/docs/clients/01_js/generation). Below is a simple
+For details on generating the query builder, refer to the [complete documentation](https://www.edgedb.com/docs/clients/js/generation). Below is a simple
 `select` query as an example.
 
 ```ts
@@ -253,17 +251,16 @@ const client = createClient();
 const query = e.select(e.Movie, movie => ({
   id: true,
   title: true,
-  actors: { name: true },
-  num_actors: e.count(movie.actors)
-  filter: e.op(movie.title, '=', 'Dune')
+  actors: {name: true},
+  num_actors: e.count(movie.actors),
+  filter: e.op(movie.title, "=", "Dune"),
 }));
 
 const result = await query.run(client);
 result.actors[0].name; // => Timothee Chalamet
 ```
 
-For details on using the query builder, refer to the full [Query builder docs]
-(https://www.edgedb.com/docs/clients/01_js/querybuilder).
+For details on using the query builder, refer to the full [query builder docs](https://www.edgedb.com/docs/clients/js/querybuilder).
 
 ## Contribute
 
