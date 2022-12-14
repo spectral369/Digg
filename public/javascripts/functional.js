@@ -218,6 +218,8 @@ function set_carousel_img() {
 					container.appendChild(div_item);
 
 
+
+
 				}
 			}
 		});
@@ -268,5 +270,15 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+});
+
+$(document).ready(function () {
+	$('#carouselExampleIndicators').on('mouseover', 'div', function (eo) {
+
+		$('#carouselExampleIndicators').off('mouseover', 'div');
+
+		$(this).on("mouseover", function () { return false; });
+	});
 
 });

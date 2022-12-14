@@ -37,6 +37,12 @@ $('#general-stats-btn').click(function () {
         datatype: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (data) {
+            $('#party-date-select').text('');
+         $('#party-date-select').append($("<option></option>")
+         .attr("selected", true)
+         .attr("disabled",true)
+         .text("Selecteaza Data"));
+
             data.forEach(element => {
                 $('#party-date-select').append($("<option></option>")
                     .attr("value", (element[0] + '/' + element[1]))

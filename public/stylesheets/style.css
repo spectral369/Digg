@@ -169,7 +169,8 @@ nav li:hover {
 }
 
 .nav-item {
-  width: 8.5em;
+ /* width: 8.5em;*/
+  width: max-content;
   padding: 0;
 
 }
