@@ -6,14 +6,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser')
 var session = require('express-session');
-var hbs =  require('hbs');
+var hbs = require('hbs');
 const fileUpload = require('express-fileupload');
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/send');
 var bartenderRouter = require('./routes/bartender');
-var adminRouter =  require('./routes/admin');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 app.use(session({
@@ -21,10 +21,12 @@ app.use(session({
   resave: true,
   rolling: true,
   saveUninitialized: true,
-  cookie: {  httpOnly: true, 
+  cookie: {
+    httpOnly: true,
     secure: true, //aici va fi true pe host(pentru ca necesita certificat https !!!!)
-    maxAge:60*60*60,
-    sameSite: 'lax' }
+    maxAge: 60 * 60 * 60,
+    sameSite: 'lax'
+  }
 }));
 
 
@@ -45,29 +47,29 @@ app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/send', usersRouter);
-app.use('/bartender',bartenderRouter);
-app.use('/admin',adminRouter);
+app.use('/bartender', bartenderRouter);
+app.use('/admin', adminRouter);
 
 
-hbs.registerHelper('equals', function(conditional, value, options) {
-	if (conditional === value) {
-		return options.fn(this);
-	} else {
-		return options.inverse(this);
-	}
+hbs.registerHelper('equals', function (conditional, value, options) {
+  if (conditional === value) {
+    return options.fn(this);
+  } else {
+    return options.inverse(this);
+  }
 })
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 //app.set('trust proxy', 1) // trust first proxy
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

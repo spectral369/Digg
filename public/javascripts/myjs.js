@@ -137,9 +137,17 @@ document.onreadystatechange = function () {
 
 const beer_birra_moretti_doza = new Beverage('Birra Moretti', 0, "0.5L", 6, '/images/baverages/beer1.png', "Doza Bere Birra Moretti 0.5L");
 const beer_heineken_doza = new Beverage('Heineken', 0, "0.5L", 8, '/images/baverages/beer1.png', "Doza Bere Heineken 0.5L");
+const beer_heineken_doza_2 = new Beverage('Heineken', 0, "0.5L", 10, '/images/baverages/beer1.png', "Doza Bere Heineken 0.5L");
+const beer_heineken_0_doza = new Beverage('Heineken 0', 0, "0.5L", 10, '/images/baverages/beer1.png', "Doza Bere Heineken 0 0.5L");
 const beer_corona_sticla = new Beverage('Corona', 0, "0.35L", 15, '/images/baverages/beer2.png', "Sticla Bere Corona 0.35L");
+const beer_strongbow_sticla = new Beverage('Strongbow', 0, "0.35L", 10, '/images/baverages/beer2.png', "Sticla Cidru Strongbow 0.35L");
+const wine_prosecco_cup = new Beverage('Prosecco', 0, "0.25L", 15, '/images/baverages/cup2.png', "Pahar Vin Prosecco 0.25L");
 const suc_cola_doza = new Beverage('Coca Cola', 0, "0.5L", 5, '/images/baverages/doza2.png', "Doza Coca Cola 0.5L");
+const suc_cola_doza_2 = new Beverage('Coca Cola', 0, "0.5L", 6, '/images/baverages/doza2.png', "Doza Coca Cola 0.5L");
 const suc_fanta_doza = new Beverage('Fanta', 0, "0.5L", 5, '/images/baverages/doza2.png', "Doza Fanta 0.5L");
+const suc_fanta_doza_2 = new Beverage('Fanta', 0, "0.5L", 6, '/images/baverages/doza2.png', "Doza Fanta 0.5L");
+const suc_santal = new Beverage('Santal', 0, "0.5L", 6, '/images/baverages/juice1.png', "Suc Santal 0.5L");
+const suc_sprite_doza = new Beverage('Sprite', 0, "0.5L", 6, '/images/baverages/doza2.png', "Doza Sprite 0.5L");
 const energizant_red_bull_doza = new Beverage('Red Bull', 0, "0.35L", 10, '/images/baverages/doza1.png', "Doza Red BUll 0.35L");
 const apa_plata_plastic = new Beverage('Apa Plata', 0, "0.5L", 5, '/images/baverages/apa1.png', "Sticla Apa Plata 0.5L");
 const apa_minerala_plastic = new Beverage('Apa Minerala', 0, "0.5L", 5, '/images/baverages/apa1.png', "Sticla Apa Minerala 0.5L");
@@ -147,20 +155,34 @@ const long_drink_vodka = new Beverage('Long Drink Vodka', 0, "0.??L", 15, '/imag
 const long_drink_rom = new Beverage('Long Drink Rom', 0, "0.??L", 15, '/images/baverages/cup2.png', "Long Drink Rom 0.??L");
 const long_drink_gin = new Beverage('Long Drink Gin', 0, "0.??L", 15, '/images/baverages/cup2.png', "Long Drink Gin 0.??L");
 const long_drink_whiskey = new Beverage('Long Drink Wiskey', 0, "0.??L", 20, '/images/baverages/cup2.png', "Long Drink Wiskey 0.??L");
+const long_drink_whiskey_2 = new Beverage('Long Drink Wiskey-Cola', 0, "0.??L", 20, '/images/baverages/cup2.png', "Long Drink Wiskey-Cola 0.??L");
+const long_drink_vodka_2 = new Beverage('Long Drink Vodka-Tonic/Santal', 0, "0.??L", 20, '/images/baverages/cup2.png', "Long Drink Vodka-Tonic/Santal 0.??L");
+const long_drink_gin_2 = new Beverage('Long Drink Gin Tonic', 0, "0.??L", 20, '/images/baverages/cup2.png', "Long Drink Gin Tonic 0.??L");
+const long_drink_cuba_libre = new Beverage('Long Drink Cuba Libre', 0, "0.??L", 20, '/images/baverages/cup2.png', "Long Drink Cuba Libre 0.??L");
+const bucket_whiskey_cola =  new Beverage('Bucket Whiskey+Cola', 0, "0.??L", 250, '/images/baverages/bottle1.png', "Bucket Whiskey + 4 Cola 0.??L");
+const bucket_vodka_juice =  new Beverage('Bucket Vodka+Juice', 0, "0.??L", 250, '/images/baverages/bottle1.png', "Bucket Vodka + Juice 0.??L");
+const bucket_gin_tonic =  new Beverage('Bucket Gin+Tonic', 0, "0.??L", 250, '/images/baverages/bottle1.png', "Bucket Gin + 4 Tonic 0.??L");
+const bucket_rom_cola =  new Beverage('Bucket Rom+Cola', 0, "0.??L", 250, '/images/baverages/bottle1.png', "Bucket Rom + 4 Cola 0.??L");
 const vodka = new Beverage('Vodka', 0, "0.1L", 16, '/images/baverages/cup1.png', "Vodka 0.1L");
 const gin = new Beverage('Gin', 0, "0.1L", 16, '/images/baverages/cup1.png', "Gin 0.1L");
 const rom = new Beverage('Rom', 0, "0.1L", 16, '/images/baverages/cup1.png', "Vodka 0.1L");
 const whiskey = new Beverage('Whiskey', 0, "0.1L", 24, '/images/baverages/cup1.png', "Whiskey 0.1L");
 const shoturi = new Beverage('Shot', 0, "0.??L", 5, '/images/baverages/shot1.png', "Shot 0.??L");
+const shoturi_2 = new Beverage('Shot', 0, "0.??L", 10, '/images/baverages/shot1.png', "Shot 0.??L");
 const promotie_jack_sticla = new Beverage('Sticla Jack Daniels', 0, "0.7L", 200, '/images/baverages/bottle1.png', "Sticla Jack Daniels 0.7L");
 const promotie_vodka_sticla = new Beverage('Sticla Vodka', 0, "0.7L", 200, '/images/baverages/bottle1.png', "Sticla Vodka 0.7L");
 const promotie_gin_sticla = new Beverage('Sticla Gin', 0, "0.7L", 200, '/images/baverages/bottle1.png', "Sticla Gin 0.7L");
 const promotie_rom_sticla = new Beverage('Sticla Rom', 0, "0.7L", 200, '/images/baverages/bottle1.png', "Sticla Rom 0.7L");
 const suc_natural = new Beverage('Suc Natural', 0, "0.5L", 20, '/images/baverages/juice1.png', "Sticla Suc natural 0.5L");
+const wine_prosecco = new Beverage('Vin Prosecco', 0, "0.75L", 120, '/images/baverages/bottle1.png', "Vin Prosecco Sticla 0.75L");
 
-const bev = [beer_birra_moretti_doza, beer_heineken_doza, beer_corona_sticla, suc_cola_doza, suc_fanta_doza, energizant_red_bull_doza, apa_plata_plastic,
+/*const bev = [beer_birra_moretti_doza, beer_heineken_doza, beer_corona_sticla, suc_cola_doza, suc_fanta_doza, energizant_red_bull_doza, apa_plata_plastic,
   apa_minerala_plastic, long_drink_vodka, long_drink_rom, long_drink_gin, long_drink_whiskey, vodka, gin, rom, whiskey, shoturi,
   promotie_jack_sticla, promotie_vodka_sticla, promotie_gin_sticla, promotie_rom_sticla, suc_natural];
+*/
+const bev = [apa_plata_plastic,apa_minerala_plastic,suc_cola_doza_2,suc_fanta_doza_2,suc_sprite_doza,suc_santal,energizant_red_bull_doza
+  ,beer_heineken_0_doza,beer_heineken_doza_2,beer_corona_sticla,wine_prosecco_cup,long_drink_whiskey_2,long_drink_vodka_2,long_drink_gin_2,
+  long_drink_cuba_libre,bucket_whiskey_cola,bucket_vodka_juice,bucket_gin_tonic,bucket_rom_cola,shoturi_2,wine_prosecco];
 
 function generate() {
 
